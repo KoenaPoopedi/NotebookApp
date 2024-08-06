@@ -14,8 +14,12 @@ namespace NotebookApp
         List<IPageable> pages = new List<IPageable>();
 
         public delegate void SimpleFunction(string command);
+        public delegate void BooleanFunction(bool isOn);
+        public event SimpleFunction ItemAdded, ItemRemoved, InputBadCommand;
+        public event BooleanFunction loggingToggled;
+
         private Dictionary<string, SimpleFunction>  commandLineArgs = new Dictionary<string, SimpleFunction>();
-        public readonly string show = "show", _new = "new", delete = "delete";//keys
+        public readonly string show = "show", _new = "new", delete = "delete", log = "logger";//keys
 
 
 
@@ -31,6 +35,7 @@ namespace NotebookApp
             commandLineArgs.Add(show, Show);
             commandLineArgs.Add(_new, New);
             commandLineArgs.Add(delete, Delete);
+            commandLineArgs.Add(log, Log);
 
         }   
 
@@ -80,16 +85,34 @@ namespace NotebookApp
                     Console.WriteLine("image     create new image page");
                     break;
                 case "message":
-                    Console.WriteLine("Creating message page!");
                     pages.Add(new TextualMessage().Input());
+
+                    if(ItemAdded != null)
+                    {
+                        ItemAdded("Textual Message");
+                    }
                     break;
                 case "list":
-                    Console.WriteLine("Creating list page!");
                     pages.Add(new MessageList().Input());
+
+                    if (ItemAdded != null)
+                    {
+                        ItemAdded("Message List");
+                    }
                     break;
                 case "image":
-                    Console.WriteLine("Creating image page!");
+                    pages.Add(new Image().Input());
+                    if (ItemAdded != null)
+                    {
+                        ItemAdded("Image");
+                    }
                     break;
+                default:
+                    if(InputBadCommand != null)
+                    {
+                        InputBadCommand("You didn't enter message, list, or image please try again");
+                    }
+                    break;  
             }
         }
         private void Show(string command)
@@ -103,7 +126,7 @@ namespace NotebookApp
                     break;
 
                 case "pages":
-                    Console.WriteLine("Showing all pages!");
+                    Console.WriteLine("/----------------------Pages--------------------\\");
                     for(int i = 0; i < pages.Count; ++i)
                     {
                         Console.WriteLine("ID: " + i + " " + pages[i].MyData.tittle);
@@ -120,6 +143,19 @@ namespace NotebookApp
                         if(number < pages.Count)
                         {
                             pages[number].Output();
+                        }
+                        else
+                        {
+                            if(InputBadCommand != null)
+                            {
+                                InputBadCommand("Your number was outside of the range of pages please try again");
+                            }
+                        }
+                    }else
+                    {
+                        if(InputBadCommand != null)
+                        {
+                            InputBadCommand("You didn't enter pages or a valid number please try again ");
                         }
                     }
                     break;
@@ -138,24 +174,66 @@ namespace NotebookApp
                     break;
 
                 case "all":
-                    Console.WriteLine("Deleting all pages!");
                     pages.Clear();
+
+                    if(ItemRemoved != null)
+                    {
+                        ItemRemoved("");
+                    }
                     break;
                 default:
                     int number;
 
                     if (int.TryParse(command, out number))
                     {
-
-                        Console.WriteLine("Deleting page" + number);
                         
                         if (number < pages.Count)
                         {
                             pages.RemoveAt(number);
+
+                            if (ItemRemoved != null)
+                            {
+                                ItemRemoved(number + " ");
+                            }
+                        }else
+                        {
+                            if(InputBadCommand != null)
+                            {
+                                InputBadCommand("Your number was outside of the range of pages, please try again.");
+                            }
                         }
                     }
                     break;
 
+            }
+        }
+        private void Log( string command)
+        {
+            switch(command)
+            {
+                case "":
+                    Console.WriteLine("Logger commands:");
+                    Console.WriteLine("on           turn logger on");
+                    Console.WriteLine("off          turn logger off");
+                    break;
+                case "on":
+                    if(loggingToggled != null)
+                    {
+                        loggingToggled(true);
+                    }
+                    break;
+                case "off":
+                    if (loggingToggled != null)
+                    {
+                        loggingToggled(false); 
+                    }
+                    break;
+                default:
+                    if(InputBadCommand != null)
+                    {
+                        InputBadCommand("Please enter on or off after inputting the log command");
+                    }
+                    break;
             }
         }
     }

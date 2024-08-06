@@ -10,7 +10,7 @@ namespace NotebookApp
     {
         private enum BulletType { Dashed, Numbered, Star}
         private BulletType bulletType;
-        //define later
+        
         public override IPageable Input()
         {
             Console.WriteLine("Please input your name");

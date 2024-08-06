@@ -12,8 +12,9 @@ namespace NotebookApp
         static void Main(string[] args)
         {
             Notebook notebook = new Notebook();
+            NotebookLogger notebookLogger = new NotebookLogger(notebook);
             const string ExitProgramKeyword = "exit";
-            string commandPrompt = "Please enetr: " + notebook.show +", "+ notebook._new +",or "+ notebook.delete;
+            string commandPrompt = "Please enetr: " + notebook.show +", "+ notebook._new +", " + notebook.delete + ",or " + notebook.log ;
 
             Console.WriteLine(Notebook.IntroMessage);
             Console.WriteLine(commandPrompt);
@@ -37,6 +38,7 @@ namespace NotebookApp
                         Console.WriteLine(e.Message);
                     }
                 }
+                Console.WriteLine();
 
             } while (input != ExitProgramKeyword); 
             Console.WriteLine(Notebook.OutroMessage);

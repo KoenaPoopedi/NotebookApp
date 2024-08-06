@@ -10,7 +10,7 @@ namespace NotebookApp
     {
         protected PageData myData;
         protected string message;
-      
+
         public virtual IPageable Input()
         {
             Console.WriteLine("Please input your name");
@@ -31,13 +31,16 @@ namespace NotebookApp
             Console.WriteLine("Author: " + myData.Author);
             Console.WriteLine("Message: \n \n" + message);
             Console.WriteLine("\\-----------------------------------------/");
-           
+
         }
         public PageData MyData
-        { get{ 
+        {
+            get
+            {
                 return myData;
-             }
-            set {
+            }
+            set
+            {
                 myData = value;
             }
         }
