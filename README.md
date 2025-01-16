@@ -50,7 +50,7 @@ Here is a list of commands you can use to interact with the application:
 2. **Creating a Page**: Use the `new` command with the appropriate keyword to create a new page.
 3. **Viewing a Page**: Use the `show` command followed by the page ID to view its content.
 4. **Deleting a Page**: Use the `delete` command followed by the page ID to remove a page.
-5. **Logging**: Use the `logger` command to turn logging on or off for tracking the application’s activity.
+5. **Logging**: Use the `logger` command to turn logging on or off for tracking the applicationâ€™s activity.
 
 ## Example Usage
 
@@ -70,8 +70,7 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 
 ## Contact
 
-For any questions or feedback, please contact [your email address].
-
+For any questions or feedback, please contact [koenapoopedi4.0@gmail.com]. 
 ---
 
 Happy note-taking!
